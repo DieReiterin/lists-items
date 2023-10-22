@@ -24,7 +24,6 @@
             :key="item.name"
             :list="this.list"
             />  
-            <!-- @itemClick="itemClick" -->
     </div> 
 </template>
 
@@ -32,47 +31,47 @@
 import ItemLeft from '@/components/ItemLeft.vue'
 import { storeManager } from '@/store/index.js'
 export default {
-  components: {
-    ItemLeft,
-  },
-  data(){
-        return {
-        }
-  },
-  props: ['list'],
-  methods: {
-    toggleUnwrap() {
-      this.useStore.lists[this.list.title].listStatus.listUnwrapped = !this.useStore.lists[this.list.title].listStatus.listUnwrapped
+    components: {
+        ItemLeft,
     },
-    listChecked() {
-      this.useStore.lists[this.list.title].listStatus.listShuffled = false
-
-      if(!this.useStore.lists[this.list.title].listStatus.listChecked) {
-
-          this.useStore.lists[this.list.title].listStatus.listPointed = false;
-
-          for(const item of Object.values(this.useStore.lists[this.list.title].items)) {
-
-              item.itemStatus.itemChecked = true
-
+    data(){
+          return {
           }
+    },
+    props: ['list'],
+    methods: {
+        toggleUnwrap() {
+            this.useStore.lists[this.list.title].listStatus.listUnwrapped = !this.useStore.lists[this.list.title].listStatus.listUnwrapped
+        },
+        listChecked() {
+            this.useStore.lists[this.list.title].listStatus.listShuffled = false
 
-      } else if(this.useStore.lists[this.list.title].listStatus.listChecked) {
+            if(!this.useStore.lists[this.list.title].listStatus.listChecked) {
 
-          for(const item of Object.values(this.useStore.lists[this.list.title].items)) {
+                this.useStore.lists[this.list.title].listStatus.listPointed = false;
 
-              item.itemStatus.itemChecked = false
-          }
-      }
-      this.useStore.lists[this.list.title].listStatus.listChecked = !this.useStore.lists[this.list.title].listStatus.listChecked
-    }
-  },
-  setup() {
-        const useStore = storeManager();  
-        return {
-          useStore,
+                for(const item of Object.values(this.useStore.lists[this.list.title].items)) {
+
+                    item.itemStatus.itemChecked = true
+
+                }
+
+            } else if(this.useStore.lists[this.list.title].listStatus.listChecked) {
+
+                for(const item of Object.values(this.useStore.lists[this.list.title].items)) {
+
+                    item.itemStatus.itemChecked = false
+                }
+            }
+            this.useStore.lists[this.list.title].listStatus.listChecked = !this.useStore.lists[this.list.title].listStatus.listChecked
         }
     },
+    setup() {
+          const useStore = storeManager();  
+          return {
+            useStore,
+          }
+      },
 }
 </script>
 
@@ -83,8 +82,6 @@ export default {
   border-radius: 4px;
   padding: 5px;
   margin-bottom: 5px;
-  // padding-left: 30px;
-  // cursor: pointer;
 }
 .list__header {
   margin-bottom: 10px;
@@ -94,14 +91,12 @@ export default {
   position: absolute;
   left: 10px;
   top: 7px;
-  // transform: translateY(-50%);
-  // transform: ;
+  cursor: pointer;
 }
 .header__title {
+  display: inline-block;
   margin: 0;
   padding: 0;
-  display: inline-block;
-  // margin-right: 10px;
   line-height: 20px;
 }
 .header__checkbox {
@@ -113,8 +108,8 @@ export default {
   margin-right: 15px;
   border: 1px solid #ccc;
   border-radius: 3px;
-  cursor: pointer;
   vertical-align: middle;
+  cursor: pointer;
 }
 .header__checkbox::before {
   content: '\2714';

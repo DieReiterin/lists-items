@@ -7,23 +7,30 @@
             @click="itemClick"
         >
         <p class="item__title">{{ item.name }}</p>
-        <input class="item__number-input" v-model="item.number" type="number" min="0" max="50">
-        <input class="item__color" v-model="item.color" type="color">
+        <input 
+            class="item__number-input" 
+            v-model="item.number" 
+            type="number" 
+            min="0"
+            @input="this.useStore.lists[this.list.title].listStatus.listShuffled = false"
+        >
+        <input 
+            class="item__color" 
+            v-model="item.color" 
+            type="color"
+            @input="this.useStore.lists[this.list.title].listStatus.listShuffled = false"
+        >
     </div>
 </template>
 
 <script>
 import { storeManager } from '@/store/index.js'
 export default {
-data(){
-      return {
-      }
-  },
   props: ['item', 'list'],
   methods: {
     itemClick() {
         this.useStore.lists[this.list.title].listStatus.listShuffled = false
-        
+
         if(this.useStore.lists[this.list.title].items[this.item.name].itemStatus.itemChecked) {
             this.itemCheckUp()
         } else if(!this.useStore.lists[this.list.title].items[this.item.name].itemStatus.itemChecked) {
@@ -42,7 +49,6 @@ data(){
         this.parentCheckRefresh()
     },
     parentPointRefresh() {
-        // if(this.useStore.lists[this.list.title].items[this.item.name].itemStatus.itemChecked){return}
 
         let point = false;
 
@@ -57,7 +63,6 @@ data(){
         } else if(!point) {
             this.useStore.lists[this.list.title].listStatus.listPointed = false
         }
-
     },
     parentCheckRefresh() {
         let check = true;
@@ -72,13 +77,7 @@ data(){
             this.useStore.lists[this.list.title].listStatus.listPointed = false
 
             this.useStore.lists[this.list.title].listStatus.listChecked = true
-        } 
-        // else if(!check) {
-        //     this.useStore.lists[this.list.title].listStatus.listChecked = false
-        //     this.parentPointRefresh()
-
-        // }
-
+        }
     }
   },
   setup() {
@@ -98,15 +97,12 @@ data(){
     height: 30px;
     margin-left: 30px;
     padding: 5px 10px;
-    // background-color: beige;
     border: 1px solid #ccc;
     border-radius: 4px;
 }
 .item__title {
     margin: 0 100px 0 0;
     padding: 0;
-    // display: inline-block;
-    // margin-right: 10px;
     line-height: 20px;
 }
 .item__checkbox {
@@ -136,15 +132,6 @@ data(){
 .check::before {
     opacity: 1;
 }
-// .item__number-p {
-//     height: 20px;
-//     min-width: 170px;
-//     margin: 0;
-//     text-align: left;
-//     padding: 7px 0 5px 5px;
-//     outline: 1px solid #ccc;
-//     border-radius: 5px;
-// }
 .item__number-input {
     width: 40px;
     margin-right: 10px;

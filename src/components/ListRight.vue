@@ -1,11 +1,11 @@
 <template>
-    <div class="list__left">
+    <div class="list__right">
         <div class="list__header">            
             <p class="header__title">{{ list.title }}</p>
             <button 
-                v-if="unwrapped"
+                v-if="unwrapped && btnShowCheck()"
                 class="header__btn"
-                @click="this.list.listStatus.listShuffled = !this.list.listStatus.listShuffled"
+                @click="clickShuffleSort"
             >{{this.list.listStatus.listShuffled ? `Сортировать` : `Перемешать`}}
           </button>
         </div>
@@ -31,83 +31,82 @@ import ItemRight from '@/components/ItemRight.vue'
 import ItemShuffled from '@/components/ItemShuffled.vue'
 import { storeManager } from '@/store/index.js'
 export default {
-  components: {
-    ItemRight, ItemShuffled,
-  },
-  data(){
-        return {
-            shuffleArr: [],
-        }
+    components: {
+        ItemRight, ItemShuffled,
     },
-  props: ['list', 'unwrapped'],
-  setup() {
-        const useStore = storeManager();     
-        return {
-          useStore,
+    data(){
+          return {
+              shuffleArr: [],
+          }
+      },
+    props: ['list', 'unwrapped'],
+    setup() {
+          const useStore = storeManager();     
+          return {
+            useStore,
+          }
+    },
+    methods: {
+        clickShuffleSort() {
+          if(!this.list.listStatus.listShuffled){
+            this.refreshShuffleArr(this.list)
+          }
+          this.list.listStatus.listShuffled = !this.list.listStatus.listShuffled
+        },
+        btnShowCheck() {
+          let show = 0
+          for (let itemObj of Object.values(this.list.items)) {
+            
+            if(this.useStore.lists[this.list.title].items[itemObj.name].itemStatus.itemChecked  
+                && this.useStore.lists[this.list.title].items[itemObj.name].number > 0) {
+              show++
+            }
+          }
+          return show > 1
+        },
+        refreshShuffleArr(list) {
+          function shuffle(array) {
+              let currentIndex = array.length,  randomIndex;
+              while (currentIndex > 0) {
+                randomIndex = Math.floor(Math.random() * currentIndex);
+                currentIndex--;
+                [array[currentIndex], array[randomIndex]] = [
+                  array[randomIndex], array[currentIndex]];
+              }
+              return array;
+          }
+          const newArr = [];
+          
+          for (let itemObj of Object.values(list.items)) {
+            
+            if(!this.useStore.lists[this.list.title].items[itemObj.name].itemStatus.itemChecked) {
+                  continue
+                }
+
+            for(let i = 0; i < itemObj.number; i++) {
+              newArr.push(itemObj.color)
+            }
+          }
+
+
+          this.shuffleArr = [];
+          for (let square of shuffle(newArr)) {
+            this.shuffleArr.push(square)
+          }
+          
         }
-  },
-  computed: {
-    // shuffled() {
-    //   if(!this.list.listStatus.listShuffled){return}
-    //   this.refreshShuffleArr(this.list)
-    // }
-  },
-  methods: {
-    // clickShuffleSort() {
-    //   this.shuffled = !this.shuffled;
-    //   if (!this.shuffled) {
-    //     // this.shuffleSquares(Object.values(this.list.items));
-    //     this.shuffled = true;
-    //   } else if (this.shuffled) {
-    //     this.shuffled = false;
-    //   }
-    // },
-
-
-    // refreshShuffleArr(list) {
-    //   function shuffle(array) {
-    //       let currentIndex = array.length,  randomIndex;
-    //       while (currentIndex > 0) {
-    //         randomIndex = Math.floor(Math.random() * currentIndex);
-    //         currentIndex--;
-    //         [array[currentIndex], array[randomIndex]] = [
-    //           array[randomIndex], array[currentIndex]];
-    //       }
-    //       return array;
-    //   }
-
-    //   const newArr = []; 
-
-
-    //   for (let itemObj of Object.values(list.items)) {
-        
-    //     if(!this.useStore.lists[this.list.title].items[itemObj.name].itemStatus.itemChecked) {continue}
-
-    //     // for(let i = 0; i < itemObj.number; i++) {
-    //     //   newArr.push(itemObj.color)
-    //     // }
-    //   }
-
-
-    //   // this.shuffleArr = [];
-    //   // for (let square of shuffle(newArr)) {
-    //   //   this.shuffleArr.push(square)
-    //   // }
-      
-    // }
-  }
+    }
 }
 </script>
 
 <style scoped lang="scss">
-.list__left {
+.list__right {
   position: relative;
+  min-height: 20px;
+  margin-bottom: 5px;
+  padding: 5px;
   border: 1px solid #ccc;
   border-radius: 4px;
-  padding: 5px;
-  margin-bottom: 5px;
-//   padding-left: 30px;
-  // cursor: pointer;
 }
 .list__header {
     display: flex;
@@ -125,14 +124,12 @@ export default {
 .header__btn {
     all: unset;
     min-width: 30px;
-    // max-width: 164px;
     height: 10px;
     padding: 5px 7px 7px 5px;
     text-align: center;
     vertical-align: middle;
     color: #fff;
     font-size: 12px;
-    // font-weight: 700;
     border: none;
     border-radius: 5px;
     background-color: rgb(1, 167, 253);

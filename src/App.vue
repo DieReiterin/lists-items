@@ -1,8 +1,8 @@
 <template>
-  <div class="container">
-    <panel-left/>
-    <panel-right/>
-  </div>
+    <div class="container">
+        <panel-left/>
+        <panel-right/>
+    </div>
 </template>
 
 <script>
@@ -28,16 +28,13 @@ export default {
                 'listPointed': false,
                 'listShuffled': false
               }
-
             for(const item of Object.values(list.items)) {
               item.itemStatus = { 
                 'itemChecked': false, 
               }
             }
-
           useStore.lists = storeLists
         }  
-
     },
 }
 </script>
@@ -47,14 +44,11 @@ export default {
   -webkit-user-drag: none;
   user-select: none;
   display: flex;
-  // flex-wrap: wrap;
   justify-content: center;
   min-height: 80vh;
   padding: 20px;
   margin: 0;
   font-size: 14px;
   font-family: Arial, Helvetica, sans-serif;
-  // background-color: lightgray;
-  // outline: 1px solid red;
 }
 </style>

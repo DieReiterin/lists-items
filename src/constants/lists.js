@@ -4,25 +4,25 @@ const list1 = {
         'Item 1': {
             name: 'Item 1',
             number: 10,
-            color: '#8426CF',
+            color: '#2650cf',
         },
         'Item 2': 
         {
             name: 'Item 2',
             number: 16,
-            color: '#7676DF',
+            color: '#bababa',
         },
         'Item 3': 
         {
             name: 'Item 3',
             number: 40,
-            color: '#2476AF',
+            color: '#ff0000',
         },
         'Item 4': 
         {
             name: 'Item 4',
             number: 2,
-            color: '#2326CB',
+            color: '#23cd37',
         },
     }
 }
@@ -31,33 +31,33 @@ const list2 = {
     items: {
         'Item 1': {
             name: 'Item 1',
-            number: 10,
-            color: '#8426CF',
+            number: 39,
+            color: '#a52a2a',
         },
         'Item 2': {
             name: 'Item 2',
-            number: 16,
-            color: '#7676DF',
+            number: 44,
+            color: '#adff2f',
         },
         'Item 3': {
             name: 'Item 3',
-            number: 40,
-            color: '#2476AF',
+            number: 25,
+            color: 'purple',
         },
         'Item 4': {
             name: 'Item 4',
-            number: 2,
-            color: '#2326CB',
+            number: 13,
+            color: '#800080',
         },
         'Item 5': {
             name: 'Item 5',
-            number: 10,
-            color: '#8426CF',
+            number: 8,
+            color: '#ffffff',
         },
         'Item 6': {
             name: 'Item 6',
-            number: 16,
-            color: '#7676DF',
+            number: 56,
+            color: '#000000',
         },
     },
 }

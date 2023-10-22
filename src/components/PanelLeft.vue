@@ -15,11 +15,6 @@ export default {
   components: {
     ListLeft,
   },
-  methods: {
-    // toggleUnwrap(listName) {
-    //   this.$emit('toggleUnwrap', listName)
-    // }
-  },
   setup() {
     const useStore = storeManager();
     const lists = Object.values(useStore.lists);
