@@ -1,19 +1,19 @@
-# lists-items
+#  Форма для заполнения информации о пользователе и детях
 
-## Project setup
-```
-npm install
-```
 
-### Compiles and hot-reloads for development
-```
-npm run serve
-```
+## Версия node.js: v18.15.0
 
-### Compiles and minifies for production
-```
-npm run build
-```
+## Версия npm: 9.6.2
 
-### Customize configuration
-See [Configuration Reference](https://cli.vuejs.org/config/).
+
+## Демо
+https://lists-items.vercel.app/
+
+<img width="603" alt="lists-items" src="https://github.com/DieReiterin/lists-items/blob/main/src/assets/lists-items.png">
+
+
+
+
+## Локальный запуск
+#### `npm run serve`
+#### `http://localhost:8080/`
