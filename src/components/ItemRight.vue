@@ -1,10 +1,10 @@
 <template>
-    <div class="item__right" v-if="this.useStore.unwrapData[this.list.title][this.item.name]">
+    <div class="item__right" v-if="checked">
       <!-- <h2>sorted</h2> -->
             <div 
-            v-for="square in item.number" class="square"
-            :style="`background:${item.color}`"
-            @click="decrementSquare"
+                v-for="square in item.number" class="square"
+                :style="`background:${item.color}`"
+                @click="decrementSquare"
             ></div>
     </div>
 </template>
@@ -19,7 +19,7 @@ data(){
         // color: '#2476CF',
       }
   },
-  props: ['item', 'list'],
+  props: ['item', 'list', 'checked'],
   methods: {
     decrementSquare() {
         this.item.number -= 1

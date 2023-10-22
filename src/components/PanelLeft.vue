@@ -22,7 +22,7 @@ export default {
   },
   setup() {
     const useStore = storeManager();
-    const lists = useStore.storeLists;
+    const lists = Object.values(useStore.lists);
     return {
       useStore,
       lists,

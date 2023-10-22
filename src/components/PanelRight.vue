@@ -4,7 +4,7 @@
             v-for="list in lists" 
             :list="list"
             :key="list.title"
-            :unwrapped="this.useStore.unwrapData[list.title].status.listUnwrapped"
+            :unwrapped="list.listStatus.listUnwrapped"
         />
     </div>
 </template>
@@ -18,7 +18,7 @@ export default {
   },
   setup() {
     const useStore = storeManager();
-    const lists = useStore.storeLists;
+    const lists = Object.values(useStore.lists);
     return {
       useStore,
       lists,

@@ -3,23 +3,23 @@
         <div class="list__header">
             <span 
                 class="header__bracket" 
-                :style="`transform:${this.useStore.unwrapData[this.list.title].status.listUnwrapped ? 'rotate(90deg)' : 'rotate(0deg)'}`"
+                :style="`transform:${this.useStore.lists[this.list.title].listStatus.listUnwrapped ? 'rotate(90deg)' : 'rotate(0deg)'}`"
                 @click="toggleUnwrap"
                 >&#10095;</span>                 
             <input 
                 class="header__checkbox" 
                 type="checkbox" 
                 :class="{
-                        'point': this.useStore.unwrapData[this.list.title].status.listPointed, 
-                        'check': this.useStore.unwrapData[this.list.title].status.listChecked
+                        'point': this.useStore.lists[this.list.title].listStatus.listPointed, 
+                        'check': this.useStore.lists[this.list.title].listStatus.listChecked
                         }"
                 @click="listChecked"
             >
             <p class="header__title">{{ list.title }}</p>
         </div>
         <item-left
-            v-if="this.useStore.unwrapData[this.list.title].status.listUnwrapped"
-            v-for="item in list.items" 
+            v-if="this.useStore.lists[this.list.title].listStatus.listUnwrapped"
+            v-for="item in Object.values(list.items)" 
             :item="item"
             :key="item.name"
             :list="this.list"
@@ -37,52 +37,40 @@ export default {
   },
   data(){
         return {
-            // point: false,
-            // check: false,
-            // unwrapped: false,
         }
   },
   props: ['list'],
   methods: {
-    // itemClick() {
-    //   // const pointNeeded = false;
-    //   for(const key of Object.keys(this.useStore.unwrapData[this.list.title])) {
-    //       if(key !== 'listUnwrapped') {
-    //         if (this.useStore.unwrapData[this.list.title][key]){this.point = true}
-    //       }
-    //     }
-    // },
     toggleUnwrap() {
-      this.useStore.unwrapData[this.list.title].status.listUnwrapped = !this.useStore.unwrapData[this.list.title].status.listUnwrapped
+      this.useStore.lists[this.list.title].listStatus.listUnwrapped = !this.useStore.lists[this.list.title].listStatus.listUnwrapped
     },
     listChecked() {
-      if(!this.useStore.unwrapData[this.list.title].status.listChecked) {
-          this.useStore.unwrapData[this.list.title].status.listPointed = false
-          for(const key of Object.keys(this.useStore.unwrapData[this.list.title])) {
-              if(key !== 'status') {
-                  this.useStore.unwrapData[this.list.title][key] = true
-              }
+      this.useStore.lists[this.list.title].listStatus.listShuffled = false
+
+      if(!this.useStore.lists[this.list.title].listStatus.listChecked) {
+
+          this.useStore.lists[this.list.title].listStatus.listPointed = false;
+
+          for(const item of Object.values(this.useStore.lists[this.list.title].items)) {
+
+              item.itemStatus.itemChecked = true
+
           }
-      } else if(this.useStore.unwrapData[this.list.title].status.listChecked) {
-          for(const key of Object.keys(this.useStore.unwrapData[this.list.title])) {
-              if(key !== 'status') {
-                  this.useStore.unwrapData[this.list.title][key] = false
-              }
+
+      } else if(this.useStore.lists[this.list.title].listStatus.listChecked) {
+
+          for(const item of Object.values(this.useStore.lists[this.list.title].items)) {
+
+              item.itemStatus.itemChecked = false
           }
       }
-      this.useStore.unwrapData[this.list.title].status.listChecked = !this.useStore.unwrapData[this.list.title].status.listChecked
+      this.useStore.lists[this.list.title].listStatus.listChecked = !this.useStore.lists[this.list.title].listStatus.listChecked
     }
   },
   setup() {
-        const useStore = storeManager(); 
-        // const listUnwrapped = useStore.unwrapData[props.list.title].status.listUnwrapped;    
-        // const listChecked = useStore.unwrapData[props.list.title].status.listChecked;    
-        // const listPointed = useStore.unwrapData[props.list.title].status.listPointed;    
+        const useStore = storeManager();  
         return {
           useStore,
-          // listChecked,
-          // listUnwrapped,
-          // listPointed,
         }
     },
 }

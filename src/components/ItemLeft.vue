@@ -3,7 +3,7 @@
         <input 
             class="item__checkbox" 
             type="checkbox" 
-            :class="{'check': this.useStore.unwrapData[this.list.title][this.item.name]}"
+            :class="{'check': item.itemStatus.itemChecked}"
             @click="itemClick"
         >
         <p class="item__title">{{ item.name }}</p>
@@ -17,67 +17,67 @@ import { storeManager } from '@/store/index.js'
 export default {
 data(){
       return {
-        // check: false,
-        // edit: false,
-        // num: 24,
-        // color: '#2476CF',
       }
   },
   props: ['item', 'list'],
   methods: {
     itemClick() {
-        if(this.useStore.unwrapData[this.list.title][this.item.name]) {
+        this.useStore.lists[this.list.title].listStatus.listShuffled = false
+        
+        if(this.useStore.lists[this.list.title].items[this.item.name].itemStatus.itemChecked) {
             this.itemCheckUp()
-        } else if(!this.useStore.unwrapData[this.list.title][this.item.name]) {
+        } else if(!this.useStore.lists[this.list.title].items[this.item.name].itemStatus.itemChecked) {
             this.itemCheckDown()
         }
     },
     itemCheckUp() {
-        this.useStore.unwrapData[this.list.title][this.item.name] = false;
+        this.useStore.lists[this.list.title].items[this.item.name].itemStatus.itemChecked = false;
+        this.useStore.lists[this.list.title].listStatus.listChecked = false
         this.parentPointRefresh()
-        this.parentCheckRefresh()        
+        this.parentCheckRefresh()                
     },
     itemCheckDown() {
-        this.useStore.unwrapData[this.list.title][this.item.name] = true
+        this.useStore.lists[this.list.title].items[this.item.name].itemStatus.itemChecked = true
+        this.parentPointRefresh()
         this.parentCheckRefresh()
     },
     parentPointRefresh() {
+        // if(this.useStore.lists[this.list.title].items[this.item.name].itemStatus.itemChecked){return}
+
         let point = false;
 
-        for(const key of Object.keys(this.useStore.unwrapData[this.list.title])) {
-          if(key !== 'status' && key !== this.list.title) {
-                if(this.useStore.unwrapData[this.list.title][key] === true) {
-                    point = true
-                }
-          }
+        for(const item of Object.values(this.useStore.lists[this.list.title].items)) {
+            if(item.itemStatus.itemChecked) {
+                point = true
+            }
         }
 
         if(point) {
-            this.useStore.unwrapData[this.list.title].status.listPointed = true
+            this.useStore.lists[this.list.title].listStatus.listPointed = true
         } else if(!point) {
-            this.useStore.unwrapData[this.list.title].status.listPointed = false
+            this.useStore.lists[this.list.title].listStatus.listPointed = false
         }
 
     },
     parentCheckRefresh() {
         let check = true;
 
-        for(const key of Object.keys(this.useStore.unwrapData[this.list.title])) {
-          if(key !== 'status' && key !== this.list.title) {
-                if(this.useStore.unwrapData[this.list.title][key] === false) {
-                    check = false
-                }
-          }
+        for(const item of Object.values(this.useStore.lists[this.list.title].items)) {
+            if(!item.itemStatus.itemChecked) {
+                check = false
+            }
         }
 
         if(check) {
-            this.useStore.unwrapData[this.list.title].status.listPointed = false
-            this.useStore.unwrapData[this.list.title].status.listChecked = true
-        } else if(!check) {
-            this.useStore.unwrapData[this.list.title].status.listChecked = false
-            this.parentPointRefresh()
+            this.useStore.lists[this.list.title].listStatus.listPointed = false
 
-        }
+            this.useStore.lists[this.list.title].listStatus.listChecked = true
+        } 
+        // else if(!check) {
+        //     this.useStore.lists[this.list.title].listStatus.listChecked = false
+        //     this.parentPointRefresh()
+
+        // }
 
     }
   },

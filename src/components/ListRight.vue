@@ -3,23 +3,25 @@
         <div class="list__header">            
             <p class="header__title">{{ list.title }}</p>
             <button 
-            v-if="unwrapped"
-            class="header__btn"
-            @click="clickShuffleSort()"
-            >Перемешать</button>
+                v-if="unwrapped"
+                class="header__btn"
+                @click="this.list.listStatus.listShuffled = !this.list.listStatus.listShuffled"
+            >{{this.list.listStatus.listShuffled ? `Сортировать` : `Перемешать`}}
+          </button>
         </div>
         <template v-if="unwrapped">
-          <item-right
-              v-if="!shuffled"             
-              v-for="item in list.items" 
-              :item="item"
-              :list="this.list"
-              :key="item.name"
-          />
-          <item-shuffled
-              v-if="shuffled"             
-              :shuffledSquares="this.shuffleArr"
-          />   
+            <item-right
+                v-if="!this.list.listStatus.listShuffled"             
+                v-for="item in Object.values(list.items)" 
+                :item="item"
+                :list="this.list"
+                :key="item.name"
+                :checked="list.items[item.name].itemStatus.itemChecked"
+            />
+            <item-shuffled
+                v-if="this.list.listStatus.listShuffled"             
+                :shuffleArr="this.shuffleArr"
+            />   
         </template>
     </div> 
 </template>
@@ -34,7 +36,6 @@ export default {
   },
   data(){
         return {
-            shuffled: false,
             shuffleArr: [],
         }
     },
@@ -45,47 +46,55 @@ export default {
           useStore,
         }
   },
+  computed: {
+    // shuffled() {
+    //   if(!this.list.listStatus.listShuffled){return}
+    //   this.refreshShuffleArr(this.list)
+    // }
+  },
   methods: {
-    clickShuffleSort() {
-      if (!this.shuffled) {
-        this.shuffleSquares(this.list.items)
-      } else {
-        this.shuffled = false
-      }
-    },
-    shuffleSquares(itemsArr) {
-      this.shuffled = true;
-      const squaresArr = []; 
+    // clickShuffleSort() {
+    //   this.shuffled = !this.shuffled;
+    //   if (!this.shuffled) {
+    //     // this.shuffleSquares(Object.values(this.list.items));
+    //     this.shuffled = true;
+    //   } else if (this.shuffled) {
+    //     this.shuffled = false;
+    //   }
+    // },
 
-      for (let arrItem of itemsArr) {
-        if(!this.useStore.unwrapData[this.list.title][arrItem.name]) {          
-          continue
-        }
-        for(let i = 0; i < arrItem.number; i++) {
-          // let newItem = {'number'}
-          squaresArr.push(arrItem.color)
-        }
-      }
 
-      function shuffle(array) {
-          let currentIndex = array.length,  randomIndex;
-          while (currentIndex > 0) {
-            randomIndex = Math.floor(Math.random() * currentIndex);
-            currentIndex--;
-            [array[currentIndex], array[randomIndex]] = [
-              array[randomIndex], array[currentIndex]];
-          }
-          return array;
-      }
+    // refreshShuffleArr(list) {
+    //   function shuffle(array) {
+    //       let currentIndex = array.length,  randomIndex;
+    //       while (currentIndex > 0) {
+    //         randomIndex = Math.floor(Math.random() * currentIndex);
+    //         currentIndex--;
+    //         [array[currentIndex], array[randomIndex]] = [
+    //           array[randomIndex], array[currentIndex]];
+    //       }
+    //       return array;
+    //   }
 
-      // shuffle(squaresArr);
-      this.shuffleArr = [];
-      for (let it of shuffle(squaresArr)) {
-        this.shuffleArr.push(it)
-      }
+    //   const newArr = []; 
+
+
+    //   for (let itemObj of Object.values(list.items)) {
+        
+    //     if(!this.useStore.lists[this.list.title].items[itemObj.name].itemStatus.itemChecked) {continue}
+
+    //     // for(let i = 0; i < itemObj.number; i++) {
+    //     //   newArr.push(itemObj.color)
+    //     // }
+    //   }
+
+
+    //   // this.shuffleArr = [];
+    //   // for (let square of shuffle(newArr)) {
+    //   //   this.shuffleArr.push(square)
+    //   // }
       
-      // console.log(shuffle(squaresArr));
-    }
+    // }
   }
 }
 </script>

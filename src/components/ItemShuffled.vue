@@ -1,17 +1,11 @@
 <template>
     <div class="item__right">
-
-
-        <!-- <h3>shuffled</h3> -->
-        <!-- <h3>{{item}}</h3> -->
-        <!-- <h4>{{this.useStore.unwrapData[list.title]}}</h4> -->
-
-
-            <div 
-            v-for="square in shuffledSquares" class="square"
+        <!-- <h6>{{ shuffleArr }}</h6> -->
+        <h6>shuffleArr </h6>
+        <!-- <div 
+            v-for="square in shuffleArr" class="square"
             :style="`background:${square}`"
-            @click="decrementSquare"
-            ></div>
+        ></div> -->
     </div>
 </template>
   
@@ -20,17 +14,13 @@ import { storeManager } from '@/store/index.js';
 export default {
     data(){
         return {
-            // check: false,
-            // edit: false,
-            // num: 24,
-            // color: '#2476CF',
         }
     },
-    props: ['shuffledSquares'],
+    props: ['shuffleArr'],
     methods: {
-        decrementSquare() {
-            this.item.number -= 1
-        }
+        // decrementSquare() {
+        //     this.item.number -= 1
+        // }
     },
     setup() {
             const useStore = storeManager();     

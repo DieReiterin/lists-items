@@ -18,26 +18,26 @@ export default {
   },
   setup() {
         const useStore = storeManager();
-        const lists = listsData;
+        const storeLists = listsData;
         
-        for(const list of lists) {
-          useStore.storeLists.push(list)
-        }  
-        for(const list of lists) {
-            const newList = {
-              'status': {
+        for(const list of Object.values(storeLists)) {
+
+            list.listStatus = {
                 'listUnwrapped': false, 
                 'listChecked': false, 
-                'listPointed': false
+                'listPointed': false,
+                'listShuffled': false
+              }
+
+            for(const item of Object.values(list.items)) {
+              item.itemStatus = { 
+                'itemChecked': false, 
               }
             }
 
-            for(const item of list.items) {
-              newList[item.name] = false
-            }
-            
-            useStore.unwrapData[list.title] = newList;
-        }
+          useStore.lists = storeLists
+        }  
+
     },
 }
 </script>
