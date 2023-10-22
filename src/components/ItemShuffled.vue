@@ -8,15 +8,8 @@
 </template>
   
 <script>
-import { storeManager } from '@/store/index.js';
 export default {
     props: ['shuffleArr'],
-    setup() {
-        const useStore = storeManager();     
-        return {
-        useStore,
-        }
-    },
 }
 </script>  
 <style scoped lang="scss">

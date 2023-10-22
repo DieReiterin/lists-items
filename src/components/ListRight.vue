@@ -29,7 +29,6 @@
 <script>
 import ItemRight from '@/components/ItemRight.vue'
 import ItemShuffled from '@/components/ItemShuffled.vue'
-import { storeManager } from '@/store/index.js'
 export default {
     components: {
         ItemRight, ItemShuffled,
@@ -40,12 +39,6 @@ export default {
           }
       },
     props: ['list', 'unwrapped'],
-    setup() {
-          const useStore = storeManager();     
-          return {
-            useStore,
-          }
-    },
     methods: {
         clickShuffleSort() {
           if(!this.list.listStatus.listShuffled){
@@ -57,8 +50,8 @@ export default {
           let show = 0
           for (let itemObj of Object.values(this.list.items)) {
             
-            if(this.useStore.lists[this.list.title].items[itemObj.name].itemStatus.itemChecked  
-                && this.useStore.lists[this.list.title].items[itemObj.name].number > 0) {
+            if(this.list.items[itemObj.name].itemStatus.itemChecked  
+                && this.list.items[itemObj.name].number > 0) {
               show++
             }
           }
@@ -79,7 +72,7 @@ export default {
           
           for (let itemObj of Object.values(list.items)) {
             
-            if(!this.useStore.lists[this.list.title].items[itemObj.name].itemStatus.itemChecked) {
+            if(!this.list.items[itemObj.name].itemStatus.itemChecked) {
                   continue
                 }
 

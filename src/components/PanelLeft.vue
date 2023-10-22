@@ -19,13 +19,11 @@ export default {
     const useStore = storeManager();
     const lists = Object.values(useStore.lists);
     return {
-      useStore,
       lists,
     }
     },
 }
 </script>
-
 <style scoped lang="scss">
 .panel__left {
   width: 30%;

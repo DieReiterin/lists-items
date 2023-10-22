@@ -19,7 +19,6 @@ export default {
     const useStore = storeManager();
     const lists = Object.values(useStore.lists);
     return {
-      useStore,
       lists,
     }
     },

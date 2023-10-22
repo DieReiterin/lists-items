@@ -3,22 +3,22 @@
         <div class="list__header">
             <span 
                 class="header__bracket" 
-                :style="`transform:${this.useStore.lists[this.list.title].listStatus.listUnwrapped ? 'rotate(90deg)' : 'rotate(0deg)'}`"
+                :style="`transform:${this.list.listStatus.listUnwrapped ? 'rotate(90deg)' : 'rotate(0deg)'}`"
                 @click="toggleUnwrap"
                 >&#10095;</span>                 
             <input 
                 class="header__checkbox" 
                 type="checkbox" 
                 :class="{
-                        'point': this.useStore.lists[this.list.title].listStatus.listPointed, 
-                        'check': this.useStore.lists[this.list.title].listStatus.listChecked
+                        'point': this.list.listStatus.listPointed, 
+                        'check': this.list.listStatus.listChecked
                         }"
                 @click="listChecked"
             >
             <p class="header__title">{{ list.title }}</p>
         </div>
         <item-left
-            v-if="this.useStore.lists[this.list.title].listStatus.listUnwrapped"
+            v-if="this.list.listStatus.listUnwrapped"
             v-for="item in Object.values(list.items)" 
             :item="item"
             :key="item.name"
@@ -29,7 +29,6 @@
 
 <script>
 import ItemLeft from '@/components/ItemLeft.vue'
-import { storeManager } from '@/store/index.js'
 export default {
     components: {
         ItemLeft,
@@ -41,37 +40,31 @@ export default {
     props: ['list'],
     methods: {
         toggleUnwrap() {
-            this.useStore.lists[this.list.title].listStatus.listUnwrapped = !this.useStore.lists[this.list.title].listStatus.listUnwrapped
+            this.list.listStatus.listUnwrapped = !this.list.listStatus.listUnwrapped
         },
         listChecked() {
-            this.useStore.lists[this.list.title].listStatus.listShuffled = false
+            this.list.listStatus.listShuffled = false
 
-            if(!this.useStore.lists[this.list.title].listStatus.listChecked) {
+            if(!this.list.listStatus.listChecked) {
 
-                this.useStore.lists[this.list.title].listStatus.listPointed = false;
+                this.list.listStatus.listPointed = false;
 
-                for(const item of Object.values(this.useStore.lists[this.list.title].items)) {
+                for(const item of Object.values(this.list.items)) {
 
                     item.itemStatus.itemChecked = true
 
                 }
 
-            } else if(this.useStore.lists[this.list.title].listStatus.listChecked) {
+            } else if(this.list.listStatus.listChecked) {
 
-                for(const item of Object.values(this.useStore.lists[this.list.title].items)) {
+                for(const item of Object.values(this.list.items)) {
 
                     item.itemStatus.itemChecked = false
                 }
             }
-            this.useStore.lists[this.list.title].listStatus.listChecked = !this.useStore.lists[this.list.title].listStatus.listChecked
+            this.list.listStatus.listChecked = !this.list.listStatus.listChecked
         }
     },
-    setup() {
-          const useStore = storeManager();  
-          return {
-            useStore,
-          }
-      },
 }
 </script>
 

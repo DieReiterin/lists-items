@@ -4,7 +4,7 @@
             class="item__checkbox" 
             type="checkbox" 
             :class="{'check': item.itemStatus.itemChecked}"
-            @click="itemClick"
+            @click="itemClick()"
         >
         <p class="item__title">{{ item.name }}</p>
         <input 
@@ -12,39 +12,41 @@
             v-model="item.number" 
             type="number" 
             min="0"
-            @input="this.useStore.lists[this.list.title].listStatus.listShuffled = false"
+            @input="listUnshuffle()"
         >
         <input 
             class="item__color" 
             v-model="item.color" 
             type="color"
-            @input="this.useStore.lists[this.list.title].listStatus.listShuffled = false"
+            @input="listUnshuffle()"
         >
     </div>
 </template>
 
 <script>
-import { storeManager } from '@/store/index.js'
 export default {
   props: ['item', 'list'],
   methods: {
+    listUnshuffle() {
+        this.list.listStatus.listShuffled = false
+    },
     itemClick() {
-        this.useStore.lists[this.list.title].listStatus.listShuffled = false
+        this.list.listStatus.listShuffled = false
 
-        if(this.useStore.lists[this.list.title].items[this.item.name].itemStatus.itemChecked) {
+        if(this.list.items[this.item.name].itemStatus.itemChecked) {
             this.itemCheckUp()
-        } else if(!this.useStore.lists[this.list.title].items[this.item.name].itemStatus.itemChecked) {
+        } else if(!this.list.items[this.item.name].itemStatus.itemChecked) {
             this.itemCheckDown()
         }
     },
     itemCheckUp() {
-        this.useStore.lists[this.list.title].items[this.item.name].itemStatus.itemChecked = false;
-        this.useStore.lists[this.list.title].listStatus.listChecked = false
+        this.list.items[this.item.name].itemStatus.itemChecked = false;
+        this.list.listStatus.listChecked = false
         this.parentPointRefresh()
         this.parentCheckRefresh()                
     },
     itemCheckDown() {
-        this.useStore.lists[this.list.title].items[this.item.name].itemStatus.itemChecked = true
+        this.list.items[this.item.name].itemStatus.itemChecked = true
         this.parentPointRefresh()
         this.parentCheckRefresh()
     },
@@ -52,40 +54,34 @@ export default {
 
         let point = false;
 
-        for(const item of Object.values(this.useStore.lists[this.list.title].items)) {
+        for(const item of Object.values(this.list.items)) {
             if(item.itemStatus.itemChecked) {
                 point = true
             }
         }
 
         if(point) {
-            this.useStore.lists[this.list.title].listStatus.listPointed = true
+            this.list.listStatus.listPointed = true
         } else if(!point) {
-            this.useStore.lists[this.list.title].listStatus.listPointed = false
+            this.list.listStatus.listPointed = false
         }
     },
     parentCheckRefresh() {
         let check = true;
 
-        for(const item of Object.values(this.useStore.lists[this.list.title].items)) {
+        for(const item of Object.values(this.list.items)) {
             if(!item.itemStatus.itemChecked) {
                 check = false
             }
         }
 
         if(check) {
-            this.useStore.lists[this.list.title].listStatus.listPointed = false
+            this.list.listStatus.listPointed = false
 
-            this.useStore.lists[this.list.title].listStatus.listChecked = true
+            this.list.listStatus.listChecked = true
         }
     }
   },
-  setup() {
-    const useStore = storeManager();     
-    return {
-        useStore,
-    }
-},
 }
 </script>
 
