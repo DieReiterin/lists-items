@@ -1,26 +1,60 @@
 <template>
-  <img alt="Vue logo" src="./assets/logo.png">
-  <HelloWorld msg="Welcome to Your Vue.js App"/>
+  <div class="container">
+    <panel-left/>
+    <panel-right/>
+  </div>
 </template>
 
 <script>
-import HelloWorld from './components/HelloWorld.vue'
+import PanelLeft from '@/components/PanelLeft.vue'
+import PanelRight from '@/components/PanelRight.vue'
+import { listsData } from '@/constants/lists.js'
+import { storeManager } from '@/store/index.js'
 
 export default {
   name: 'App',
   components: {
-    HelloWorld
-  }
+    PanelLeft, PanelRight
+  },
+  setup() {
+        const useStore = storeManager();
+        const lists = listsData;
+        
+        for(const list of lists) {
+          useStore.storeLists.push(list)
+        }  
+        for(const list of lists) {
+            const newList = {
+              'status': {
+                'listUnwrapped': false, 
+                'listChecked': false, 
+                'listPointed': false
+              }
+            }
+
+            for(const item of list.items) {
+              newList[item.name] = false
+            }
+            
+            useStore.unwrapData[list.title] = newList;
+        }
+    },
 }
 </script>
 
 <style lang="scss">
-#app {
-  font-family: Avenir, Helvetica, Arial, sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-  text-align: center;
-  color: #2c3e50;
-  margin-top: 60px;
+.container {
+  -webkit-user-drag: none;
+  user-select: none;
+  display: flex;
+  // flex-wrap: wrap;
+  justify-content: center;
+  min-height: 80vh;
+  padding: 20px;
+  margin: 0;
+  font-size: 14px;
+  font-family: Arial, Helvetica, sans-serif;
+  // background-color: lightgray;
+  // outline: 1px solid red;
 }
 </style>
